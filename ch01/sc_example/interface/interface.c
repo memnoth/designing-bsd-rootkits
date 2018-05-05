@@ -28,14 +28,19 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+
 #include <sys/syscall.h>
 #include <sys/types.h>
 #include <sys/module.h>
+#include <unistd.h>
 
 int
 main(int argc, char *argv[])
 {
-	int syscall_num;
+	int syscall_num, ret;
 	struct module_stat stat;
 
 	if (argc != 2) {
@@ -45,9 +50,15 @@ main(int argc, char *argv[])
 
 	/* Determine sc_example's offset value. */
 	stat.version = sizeof(stat);
-	modstat(modfind("sc_example"), &stat);
+
+	if ( (ret = modfind("sys/sc_example")) == -1) {
+		printf("modfind: %s\n", strerror(errno));
+		exit(-1);
+	}
+
+	modstat(ret, &stat);
 	syscall_num = stat.data.intval;
 
 	/* Call sc_example. */
-	return(syscall(syscall_num, argv[1]));
+	return(__syscall(syscall_num, argv[1]));
 }
