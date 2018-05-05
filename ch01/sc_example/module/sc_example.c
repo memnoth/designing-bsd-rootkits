@@ -35,6 +35,8 @@
 #include <sys/kernel.h>
 #include <sys/systm.h>
 
+#include <bsm/audit_kevents.h>
+
 /* The system call's arguments. */
 struct sc_example_args {
 	char *str;
