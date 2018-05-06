@@ -93,6 +93,9 @@
 #include <string.h>
 #include <sys/types.h>
 
+#include <stdlib.h>
+#include <unistd.h>
+
 #define CDEV_DEVICE "cd_example"
 static char buf[512+1];
 
